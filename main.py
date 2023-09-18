@@ -26,7 +26,7 @@ placesCorrelatedWithPatterns = {
     }
 transactionsAtPlaces = { "amazon": 0, "clothes": 0, "gas": 0, "cats": 0, "costco": 0, "grocery": 0, "internet": 0, "ups": 0, 
                         "usps": 0, "utilities": 0, "apple": 0, "entertainment": 0, "food_delivery": 0, "target": 0, "office_supplies": 0, 
-                        "gym": 0,  "eating_out": 0, "other": 0, "allstate:": 0, }
+                        "gym": 0,  "eating_out": 0, "other": 0, "allstate": 0, }
 
 class Transaction:
     def __init__(self, date_of_transaction, place, key_character_patterns, amount):
@@ -93,7 +93,7 @@ def create_transaction_from_string(transaction_string):
     amount = float(parts_of_transaction_string[len(parts_of_transaction_string)-1]) #last element is the amount for the transaction
     # Create and return a Transaction object
     return Transaction(date_of_transaction, place, key_character_patterns, amount)
-
+#map the patterns found in statement to places correlated with patterns data structure
 def mapCharacterPatternsToPlace(transactions):
     for i in range(len(transactions)):
         patterns = transactions[i].key_character_patterns
@@ -109,15 +109,15 @@ def mapCharacterPatternsToPlace(transactions):
 
     return transactions 
 
+#create Transaction objects from string
 def createTransactionObjects(listOfTransactionStrings):
     transactionObjectList = []
     for i in listOfTransactionStrings:
         transactionObjectList.append(create_transaction_from_string(i))
-    print("------------------printing objects------------------\n")
+
     for i in transactionObjectList:
         print(i)
     transactionsWithPlace  = mapCharacterPatternsToPlace(transactionObjectList)
-    print("------------------printing objects with place------------------\n")
 
     return transactionsWithPlace
 #reads in content from the file_path which is a .txt file, looks for from_string
@@ -128,7 +128,7 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
     addSubsequentLinesToTransactions= False
     # Open the file for reading (default mode is 'r')
     transactions = []
-    print("fie_path ", file_path, "from_string ", from_string, "to_string ", to_string)
+    
     try:
         with open(file_path, 'r') as file:
             # Loop through each line in the file
@@ -158,9 +158,29 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
     return transactions
 
 def calculateTransactionsAtPlaces(transactions):
+
     for i in transactions:
         transactionsAtPlaces[i.place] += i.amount
-    print(transactionsAtPlaces)
+        transactionsAtPlaces[i.place] = round(transactionsAtPlaces[i.place],2)
+
+#write data to spending.txt
+def writeTransactionsAtPlacesToFile(file_path, totalSum):
+    # Open the file in write mode
+    try:
+        with open(file_path, 'w') as file:
+            item = "Total Sum: " + str(totalSum)
+            file.write( item+ "\n")
+            # Write the contents of the list to the file
+            for key,val in transactionsAtPlaces.items():
+                item = str(key) + " " + str(val)
+                file.write( item+ "\n")  # Add a newline character to separate items
+            file.write("\n")
+            item = "Total Sum: " + str(totalSum) + "\n"
+            file.write(item + "\n")
+
+        print(f"Data written to '{file_path}' successfully.")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
 
 def main():
     # Specify the paths for your PDF and the desired text file
@@ -182,6 +202,14 @@ def main():
     
     transactions = readAndCreateListOfTransactions(txt_file_path, from_string, to_string )
     calculateTransactionsAtPlaces(transactions)
+    totalSum = 0
+    for key,value in transactionsAtPlaces.items():
+        print(key,":",value)
+        totalSum += value
+    totalSum = round(totalSum,2)  
+
+    writeTransactionsAtPlacesToFile(txt_file_path, totalSum)
+    
     #print(charges)
 if __name__ == "__main__":
     main()
