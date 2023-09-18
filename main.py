@@ -4,6 +4,30 @@ import PyPDF2
 import re
 
 testing = True
+placesCorrelatedWithPatterns = {
+    "amzn":"amazon", "amzn.com/bill":"amazon", "amazon.com":"amazon","audible":"amazon",
+    "allstate": "allstate",
+    "circle":"gas", "shell":"gas", "gas":"gas", "oil":"gas",
+    "veterinary":"cats",
+    "costco": "costco",
+    "yokes":"grocery","safeway":"grocery", "yoke's":"grocery","fresh":"grocery", "qfc":"grocery",
+    "spectrum":"internet", "verizon":"internet", "ziply":"internet",
+    "usps": "usps", "ups":"ups",
+    "city":"utilities",
+    "pp*apple.com/bill":"apple",
+    "amc":"entertainment", "spotify":"entertainment",
+    "doordash":"food_delivery",
+    "target":"target",
+    "reebok":"clothes", "uniqlo":"clothes",
+    "office":"office_supplies",
+    "planet":"gym", "fitness":"gym", "golds":"gym",
+    "chipotle":"eating_out", "dining":"eating_out", "mod":"eating_out",
+    "other":"other"
+    }
+transactionsAtPlaces = { "amazon": 0, "clothes": 0, "gas": 0, "cats": 0, "costco": 0, "grocery": 0, "internet": 0, "ups": 0, 
+                        "usps": 0, "utilities": 0, "apple": 0, "entertainment": 0, "food_delivery": 0, "target": 0, "office_supplies": 0, 
+                        "gym": 0,  "eating_out": 0, "other": 0 }
+
 class Transaction:
     def __init__(self, date_of_transaction, place, key_character_patterns, amount):
         self.date_of_transaction = date_of_transaction
@@ -62,8 +86,6 @@ def create_transaction_from_string(transaction_string):
     while index < len(parts_of_transaction_string):
         if parts_of_transaction_string[index][0].isalpha():
            key_character_patterns.append(parts_of_transaction_string[index])
-        else:
-            break
         index += 1
 
     # Assign "Place" object to "Costco"
@@ -72,6 +94,21 @@ def create_transaction_from_string(transaction_string):
     # Create and return a Transaction object
     return Transaction(date_of_transaction, place, key_character_patterns, amount)
 
+def mapCharacterPatternsToPlace(transactions):
+    for i in range(len(transactions)):
+        patterns = transactions[i].key_character_patterns
+        found_match = False
+        for pattern in patterns:
+            if placesCorrelatedWithPatterns.get(pattern):
+                transactions[i].place = placesCorrelatedWithPatterns[pattern]
+                found_match = True
+                break
+        
+        if not found_match:
+            transactions[i].place = "other"
+
+    return transactions 
+
 def createTransactionObjects(listOfTransactionStrings):
     transactionObjectList = []
     for i in listOfTransactionStrings:
@@ -79,9 +116,10 @@ def createTransactionObjects(listOfTransactionStrings):
     print("------------------printing objects------------------\n")
     for i in transactionObjectList:
         print(i)
-    #mapCharacterPatternsToPlace(transactionObjectList)
-        
-    return 0
+    transactionsWithPlace  = mapCharacterPatternsToPlace(transactionObjectList)
+    print("------------------printing objects with place------------------\n")
+
+    return transactionsWithPlace
 #reads in content from the file_path which is a .txt file, looks for from_string
 #after from_string is found lines from .txt file each subsequent line is appended to 
 #charges list until the to_string is found 
@@ -114,7 +152,9 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
         print(f"The file '{file_path}' was not found.")
     except Exception as e:
         print(f"An error occurred: {str(e)}")
-    createTransactionObjects(transactions)
+    transactions = createTransactionObjects(transactions)
+    for i in transactions:
+        print(i)
     return transactions
 
 def main():
