@@ -26,7 +26,7 @@ placesCorrelatedWithPatterns = {
     }
 transactionsAtPlaces = { "amazon": 0, "clothes": 0, "gas": 0, "cats": 0, "costco": 0, "grocery": 0, "internet": 0, "ups": 0, 
                         "usps": 0, "utilities": 0, "apple": 0, "entertainment": 0, "food_delivery": 0, "target": 0, "office_supplies": 0, 
-                        "gym": 0,  "eating_out": 0, "other": 0 }
+                        "gym": 0,  "eating_out": 0, "other": 0, "allstate:": 0, }
 
 class Transaction:
     def __init__(self, date_of_transaction, place, key_character_patterns, amount):
@@ -157,6 +157,11 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
         print(i)
     return transactions
 
+def calculateTransactionsAtPlaces(transactions):
+    for i in transactions:
+        transactionsAtPlaces[i.place] += i.amount
+    print(transactionsAtPlaces)
+
 def main():
     # Specify the paths for your PDF and the desired text file
   
@@ -175,8 +180,8 @@ def main():
     from_string= from_string.lower()
     to_string = to_string.lower()
     
-    readAndCreateListOfTransactions(txt_file_path, from_string, to_string )
-
+    transactions = readAndCreateListOfTransactions(txt_file_path, from_string, to_string )
+    calculateTransactionsAtPlaces(transactions)
     #print(charges)
 if __name__ == "__main__":
     main()
