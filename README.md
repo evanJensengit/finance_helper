@@ -12,7 +12,3 @@ install pip and run `pip install PyPDF2`
 Navigate to directory finance_helper is in and run `python3 main.py`   
 Enter in the path to the pdf file of banking statment on local file storage device
 Enter the path for the Spending.txt file to be created from the pdf file 
-.txt file is a preliminary step to creating the Spending.txt file
-
-
-
