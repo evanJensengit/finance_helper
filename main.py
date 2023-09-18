@@ -3,6 +3,7 @@ import sys
 import PyPDF2
 import re
 
+testing = False
 class Transaction:
     def __init__(self, date_of_transaction, place, key_character_patterns, amount):
         self.date_of_transaction = date_of_transaction
@@ -14,8 +15,9 @@ class Transaction:
         return f"Date: {self.date_of_transaction}, Place: {self.place}, Patterns: {self.key_character_patterns}, Amount: {self.amount}"
 
 def pdf_to_text(pdf_file_path, txt_file_path):
-    pdf_file_path = "081523 WellsFargo.pdf"
-    txt_file_path= "test_data.txt"
+    if testing:
+        pdf_file_path = "081523 WellsFargo.pdf"
+        txt_file_path= "test_data.txt"
     try:
         # Open the PDF file
         with open(pdf_file_path, 'rb') as pdf_file:
@@ -117,15 +119,15 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
 
 def main():
     # Specify the paths for your PDF and the desired text file
-    pdf_file_path = "081523 WellsFargo.pdf"
-    txt_file_path = "test_data.txt"
+  
 
     # Call the function to convert the PDF to text
-    print("What pdf file would you like to convert to .txt file?")
 
-    pdf_file_name = input("Enter the path of the .pdf file you would like to read from")
-    txt_file_name = input("Enter the name of the .txt file you would like to create")
-    
+    pdf_file_path = input("Enter the path of the .pdf file you would like to read from")
+    txt_file_path = input("Enter the name of the .txt file you would like to create")
+    if testing:
+        pdf_file_path = "081523 WellsFargo.pdf"
+        txt_file_path = "test_data.txt"
     pdf_to_text(pdf_file_path, txt_file_path)
 
     from_string = "Purchases, Balance Transfers & Other Charges"
