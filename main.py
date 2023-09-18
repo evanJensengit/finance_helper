@@ -3,7 +3,7 @@ import sys
 import PyPDF2
 import re
 
-testing = False
+testing = True
 class Transaction:
     def __init__(self, date_of_transaction, place, key_character_patterns, amount):
         self.date_of_transaction = date_of_transaction
@@ -17,7 +17,7 @@ class Transaction:
 def pdf_to_text(pdf_file_path, txt_file_path):
     if testing:
         pdf_file_path = "081523 WellsFargo.pdf"
-        txt_file_path= "test_data.txt"
+        txt_file_path= "Spending.txt"
     try:
         # Open the PDF file
         with open(pdf_file_path, 'rb') as pdf_file:
@@ -127,7 +127,7 @@ def main():
     txt_file_path = input("Enter the name of the .txt file you would like to create")
     if testing:
         pdf_file_path = "081523 WellsFargo.pdf"
-        txt_file_path = "test_data.txt"
+        txt_file_path = "Spending.txt"
     pdf_to_text(pdf_file_path, txt_file_path)
 
     from_string = "Purchases, Balance Transfers & Other Charges"
