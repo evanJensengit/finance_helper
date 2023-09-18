@@ -39,9 +39,7 @@ class Transaction:
         return f"Date: {self.date_of_transaction}, Place: {self.place}, Patterns: {self.key_character_patterns}, Amount: {self.amount}"
 
 def pdf_to_text(pdf_file_path, txt_file_path):
-    if testing:
-        pdf_file_path = "081523 WellsFargo.pdf"
-        txt_file_path= "Spending.txt"
+
     try:
         # Open the PDF file
         with open(pdf_file_path, 'rb') as pdf_file:
@@ -158,7 +156,6 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
     return transactions
 
 def calculateTransactionsAtPlaces(transactions):
-
     for i in transactions:
         transactionsAtPlaces[i.place] += i.amount
         transactionsAtPlaces[i.place] = round(transactionsAtPlaces[i.place],2)
@@ -168,7 +165,6 @@ def writeTransactionsAtPlacesToFile(file_path, totalSum):
     # Open the file in write mode
     try:
         with open(file_path, 'w') as file:
-            item = "Total Sum: " + str(totalSum)
             file.write( item+ "\n")
             # Write the contents of the list to the file
             for key,val in transactionsAtPlaces.items():
@@ -191,7 +187,7 @@ def main():
     pdf_file_path = input("Enter the path of the .pdf file you would like to read from")
     txt_file_path = input("Enter the name of the .txt file you would like to create")
     if testing:
-        pdf_file_path = "081523 WellsFargo.pdf"
+        pdf_file_path = "banking_statements/091423 WellsFargo.pdf"
         txt_file_path = "Spending.txt"
     pdf_to_text(pdf_file_path, txt_file_path)
 
