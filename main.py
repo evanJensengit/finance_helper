@@ -159,13 +159,15 @@ def calculateTransactionsAtPlaces(transactions):
     for i in transactions:
         transactionsAtPlaces[i.place] += i.amount
         transactionsAtPlaces[i.place] = round(transactionsAtPlaces[i.place],2)
+    periodOfTransactions = transactions[0].date_of_transaction + " " + transactions[len(transactions)-1].date_of_transaction
+    return periodOfTransactions
 
 #write data to spending.txt
-def writeTransactionsAtPlacesToFile(file_path, totalSum):
+def writeTransactionsAtPlacesToFile(file_path, totalSum, periodOfTransactions):
     # Open the file in write mode
     try:
         with open(file_path, 'w') as file:
-            file.write( item+ "\n")
+            file.write( periodOfTransactions+ "\n")
             # Write the contents of the list to the file
             for key,val in transactionsAtPlaces.items():
                 item = str(key) + " " + str(val)
@@ -186,6 +188,7 @@ def main():
 
     pdf_file_path = input("Enter the path of the .pdf file you would like to read from")
     txt_file_path = input("Enter the name of the .txt file you would like to create")
+
     if testing:
         pdf_file_path = "banking_statements/091423 WellsFargo.pdf"
         txt_file_path = "Spending.txt"
@@ -195,16 +198,17 @@ def main():
     to_string = "TOTAL PURCHASES, BALANCE TRANSFERS & OTHER CHARGES FOR THIS PERIOD"
     from_string= from_string.lower()
     to_string = to_string.lower()
-    
+
+    edits = input("edit text file if you want")
     transactions = readAndCreateListOfTransactions(txt_file_path, from_string, to_string )
-    calculateTransactionsAtPlaces(transactions)
+    periodOfTransactions = calculateTransactionsAtPlaces(transactions)
     totalSum = 0
     for key,value in transactionsAtPlaces.items():
         print(key,":",value)
         totalSum += value
     totalSum = round(totalSum,2)  
 
-    writeTransactionsAtPlacesToFile(txt_file_path, totalSum)
+    writeTransactionsAtPlacesToFile(txt_file_path, totalSum, periodOfTransactions)
     
     #print(charges)
 if __name__ == "__main__":
