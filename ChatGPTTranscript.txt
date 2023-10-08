@@ -1,0 +1,5 @@
+Link to chatgpt transcript https://chat.openai.com/share/9f99d1de-60c1-46fc-8186-d56ec5d94d4a
+
+The PyPDF2 library that chatgpt recommended was outdated and had to look around the web to find 
+PdfReader to successfully translate the data in the pdf document to a .txt file
+
