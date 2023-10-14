@@ -44,7 +44,6 @@ def pdf_to_text(pdf_file_path, txt_file_path):
         # Open the PDF file
         with open(pdf_file_path, 'rb') as pdf_file:
             pdf_reader = PyPDF2.PdfReader(pdf_file)
-
             # Initialize an empty text string
             text = ""
             
@@ -113,8 +112,6 @@ def createTransactionObjects(listOfTransactionStrings):
     for i in listOfTransactionStrings:
         transactionObjectList.append(create_transaction_from_string(i))
 
-    for i in transactionObjectList:
-        print(i)
     transactionsWithPlace  = mapCharacterPatternsToPlace(transactionObjectList)
 
     return transactionsWithPlace
@@ -126,7 +123,7 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
     addSubsequentLinesToTransactions= False
     # Open the file for reading (default mode is 'r')
     transactions = []
-    
+
     try:
         with open(file_path, 'r') as file:
             # Loop through each line in the file
@@ -145,11 +142,11 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
                 
                 # Process each line as needed
                 #print(line.strip())  # .strip() removes the newline character
-    
     except FileNotFoundError:
         print(f"The file '{file_path}' was not found.")
     except Exception as e:
         print(f"An error occurred: {str(e)}")
+
     transactions = createTransactionObjects(transactions)
     for i in transactions:
         print(i)
