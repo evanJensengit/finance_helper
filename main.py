@@ -43,69 +43,12 @@ class Transaction:
     def __str__(self):
         return f"Date: {self.date_of_transaction}, Place: {self.place}, Patterns: {self.key_character_patterns}, Amount: {self.amount}"
 
-
-# Function to create a Transaction object from a transaction string
-def create_transaction_from_string(transaction_string):
-    # Split the input string into parts using space as a delimiter
-    parts_of_transaction_string = transaction_string.split()
-
-    # Find the first occurrence of the date (transaction date) and parse it into a date object
-    pattern = r'\d{2}/\d{2}'
-    
-    # Use re.findall to find all matches
-    matches = re.findall(pattern, parts_of_transaction_string[1])
-    if len(matches) >= 2:
-        date_of_transaction = matches[0]  # Get the first date
-
-    key_character_patterns = []
-    # Add strings before the cost to the list of key_character_patterns
-    index = 3
-    while index < len(parts_of_transaction_string):
-        if parts_of_transaction_string[index][0].isalpha():
-           key_character_patterns.append(parts_of_transaction_string[index])
-        index += 1
-
-    # Assign "Place" object to "Costco"
-    place = ""
-    amount = float(parts_of_transaction_string[len(parts_of_transaction_string) - 1])  # Last element is the amount
-    # Create and return a Transaction object
-    return Transaction(date_of_transaction, place, key_character_patterns, amount)
-
-# Function to map character patterns to places in a list of transactions
-def mapCharacterPatternsToPlace(transactions):
-    for i in range(len(transactions)):
-        patterns = transactions[i].key_character_patterns
-        found_match = False
-        for pattern in patterns:
-            if placesCorrelatedWithPatterns.get(pattern):
-                transactions[i].place = placesCorrelatedWithPatterns[pattern]
-                found_match = True
-                break
-        
-        if not found_match:
-            transactions[i].place = "other"
-
-    return transactions
-
-# Function to create a list of Transaction objects from a list of transaction strings
-def createTransactionObjects(listOfTransactionStrings):
-    transactionObjectList = []
-    for i in listOfTransactionStrings:
-        transactionObjectList.append(create_transaction_from_string(i))
-
-    for i in transactionObjectList:
-        print(i)
-    transactionsWithPlace  = mapCharacterPatternsToPlace(transactionObjectList)
-
-    return transactionsWithPlace
-
 def pdf_to_text(pdf_file_path, txt_file_path):
 
     try:
         # Open the PDF file
         with open(pdf_file_path, 'rb') as pdf_file:
             pdf_reader = PyPDF2.PdfReader(pdf_file)
-
             # Initialize an empty text string
             text = ""
             
@@ -127,6 +70,58 @@ def pdf_to_text(pdf_file_path, txt_file_path):
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
+def create_transaction_from_string(transaction_string):
+    # Split the input string into parts using space as a delimiter
+    parts_of_transaction_string = transaction_string.split()
+
+    # Find the first occurrence of date (transaction date) and parse it into a date object
+    pattern = r'\d{2}/\d{2}'
+    
+    # Use re.findall to find all matches
+    matches = re.findall(pattern, parts_of_transaction_string[1])
+    if len(matches) >= 2:
+        date_of_transaction = matches[0] #get first date
+
+    key_character_patterns = []
+    # Add strings before the cost associated to the list of key_character_patterns
+    index = 3
+    while index < len(parts_of_transaction_string):
+        if parts_of_transaction_string[index][0].isalpha():
+           key_character_patterns.append(parts_of_transaction_string[index])
+        index += 1
+
+    # Assign "Place" object to "Costco"
+    place = ""
+    amount = float(parts_of_transaction_string[len(parts_of_transaction_string)-1]) #last element is the amount for the transaction
+    # Create and return a Transaction object
+    return Transaction(date_of_transaction, place, key_character_patterns, amount)
+#map the patterns found in statement to places correlated with patterns data structure
+def mapCharacterPatternsToPlace(transactions):
+    for i in range(len(transactions)):
+        patterns = transactions[i].key_character_patterns
+        found_match = False
+        for pattern in patterns:
+            if placesCorrelatedWithPatterns.get(pattern):
+                transactions[i].place = placesCorrelatedWithPatterns[pattern]
+                found_match = True
+                break
+        
+        if not found_match:
+            transactions[i].place = "other"
+
+    return transactions 
+
+#create Transaction objects from string
+def createTransactionObjects(listOfTransactionStrings):
+    transactionObjectList = []
+    for i in listOfTransactionStrings:
+        transactionObjectList.append(create_transaction_from_string(i))
+
+    transactionsWithPlace  = mapCharacterPatternsToPlace(transactionObjectList)
+
+    return transactionsWithPlace
+
+
 #reads in content from the file_path which is a .txt file, looks for from_string
 #after from_string is found lines from .txt file each subsequent line is appended to 
 #charges list until the to_string is found 
@@ -135,7 +130,7 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
     addSubsequentLinesToTransactions= False
     # Open the file for reading (default mode is 'r')
     transactions = []
-    
+
     try:
         with open(file_path, 'r') as file:
             # Loop through each line in the file
@@ -154,11 +149,11 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
                 
                 # Process each line as needed
                 #print(line.strip())  # .strip() removes the newline character
-    
     except FileNotFoundError:
         print(f"The file '{file_path}' was not found.")
     except Exception as e:
         print(f"An error occurred: {str(e)}")
+
     transactions = createTransactionObjects(transactions)
     for i in transactions:
         print(i)
