@@ -4,6 +4,8 @@ import PyPDF2
 import re
 
 testing = True
+
+# Define a dictionary to map patterns to places
 placesCorrelatedWithPatterns = {
     "amzn":"amazon", "amzn.com/bill":"amazon", "amazon.com":"amazon","audible":"amazon",
     "allstate": "allstate",
@@ -24,10 +26,13 @@ placesCorrelatedWithPatterns = {
     "chipotle":"eating_out", "dining":"eating_out", "mod":"eating_out",
     "other":"other"
     }
+
+# Initialize a dictionary to store transactions at places
 transactionsAtPlaces = { "amazon": 0, "clothes": 0, "gas": 0, "cats": 0, "costco": 0, "grocery": 0, "internet": 0, "ups": 0, 
                         "usps": 0, "utilities": 0, "apple": 0, "entertainment": 0, "food_delivery": 0, "target": 0, "office_supplies": 0, 
                         "gym": 0,  "eating_out": 0, "other": 0, "allstate": 0, }
 
+# Define a Transaction class to represent individual transactions
 class Transaction:
     def __init__(self, date_of_transaction, place, key_character_patterns, amount):
         self.date_of_transaction = date_of_transaction
@@ -115,6 +120,8 @@ def createTransactionObjects(listOfTransactionStrings):
     transactionsWithPlace  = mapCharacterPatternsToPlace(transactionObjectList)
 
     return transactionsWithPlace
+
+
 #reads in content from the file_path which is a .txt file, looks for from_string
 #after from_string is found lines from .txt file each subsequent line is appended to 
 #charges list until the to_string is found 
@@ -179,16 +186,15 @@ def writeTransactionsAtPlacesToFile(file_path, totalSum, periodOfTransactions):
 
 def main():
     # Specify the paths for your PDF and the desired text file
-  
-
-    # Call the function to convert the PDF to text
-
     pdf_file_path = input("Enter the path of the .pdf file you would like to read from")
     txt_file_path = input("Enter the name of the .txt file you would like to create")
 
+    # Call the function to convert the PDF to text
     if testing:
         pdf_file_path = "banking_statements/091423 WellsFargo.pdf"
         txt_file_path = "Spending.txt"
+    
+    # Call the function to convert the PDF to text
     pdf_to_text(pdf_file_path, txt_file_path)
 
     from_string = "Purchases, Balance Transfers & Other Charges"
