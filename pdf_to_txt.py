@@ -1,7 +1,7 @@
 import PyPDF2
 
+#translate the pdf file to txt file
 def pdf_to_text(pdf_file_path, txt_file_path):
-
     try:
         # Open the PDF file
         with open(pdf_file_path, 'rb') as pdf_file:

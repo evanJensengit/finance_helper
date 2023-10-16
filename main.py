@@ -4,6 +4,7 @@ import pdf_to_txt
 import transaction_creator
 testing = True
 
+
 def calculateTransactionsAtPlaces(transactions):
     for i in transactions:
         transaction_creator.transactionsAtPlaces[i.place] += i.amount

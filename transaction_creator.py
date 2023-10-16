@@ -36,7 +36,7 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
                 #end of transactions 
                 if to_string in lower_case_line:
                     break
-                #add charge to charges list
+                #add transaction to transactions list
                 if addSubsequentLinesToTransactions:
                     transactions.append(lower_case_line)
                 #beginning of transactions 
@@ -57,7 +57,6 @@ def readAndCreateListOfTransactions(file_path, from_string, to_string):
     return transactions
 
 def generatePlacesWithPatternsDict():
-    #read in each key with
     # Read the content from the .txt file
     with open('placesWithPatterns.txt', 'r') as file:
         lines = file.readlines()
@@ -68,11 +67,10 @@ def generatePlacesWithPatternsDict():
         line = line.strip()
         # Split the line into key and value using ":"
         key_value_pairs = line.split(",")
-        print("key value pairs", key_value_pairs)
+
         # Iterate through the key-value pairs and add them to the dictionary
         for pair in key_value_pairs:
             if ":" in pair:
-                print("pair", pair)
                 # Split each pair into key and value using ":"
                 key, value = pair.split(":")
                 # Remove double quotes and leading/trailing spaces from key and value
@@ -99,7 +97,7 @@ def generateTransactionsAtPlaces():
              if ":" in pair:
                 # Split each pair into key and value using ":"
                 key, value = pair.split(":")
-                # Remove double quotes and leading/trailing spaces from key and value
+                # Remove double quotes and leading/trailing spaces from key
                 key = key.strip(' "')
                 value = int(value)
                 # Add the key-value pair to the dictionary
