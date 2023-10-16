@@ -67,12 +67,19 @@ def generatePlacesWithPatternsDict():
         # Remove leading and trailing whitespaces
         line = line.strip()
         # Split the line into key and value using ":"
-        key, value = line.split(":")
-        # Remove leading and trailing whitespaces from key and value
-        key = key.strip().strip('"')
-        value = value.strip().strip('"')
-        # Add the key-value pair to the dictionary
-        placesCorrelatedWithPatterns[key] = value
+        key_value_pairs = line.split(",")
+        print("key value pairs", key_value_pairs)
+        # Iterate through the key-value pairs and add them to the dictionary
+        for pair in key_value_pairs:
+            if ":" in pair:
+                print("pair", pair)
+                # Split each pair into key and value using ":"
+                key, value = pair.split(":")
+                # Remove double quotes and leading/trailing spaces from key and value
+                key = key.strip(' "')
+                value = value.strip(' "')
+                # Add the key-value pair to the dictionary
+                placesCorrelatedWithPatterns[key] = value
 
 def generateTransactionsAtPlaces():
     #read in each key with
@@ -85,12 +92,18 @@ def generateTransactionsAtPlaces():
         # Remove leading and trailing whitespaces
         line = line.strip()
         # Split the line into key and value using ":"
-        key, value = line.split(":")
-        # Remove leading and trailing whitespaces from key and value
-        key = key.strip().strip('"')
-        value = value.strip()
-        # Add the key-value pair to the dictionary
-        transactionsAtPlaces[key] = value
+        key_value_pairs = line.split(",")
+
+        # Iterate through the key-value pairs and add them to the dictionary
+        for pair in key_value_pairs:
+             if ":" in pair:
+                # Split each pair into key and value using ":"
+                key, value = pair.split(":")
+                # Remove double quotes and leading/trailing spaces from key and value
+                key = key.strip(' "')
+                value = int(value)
+                # Add the key-value pair to the dictionary
+                transactionsAtPlaces[key] = value
 
 #create Transaction objects from string
 def createTransactionObjects(listOfTransactionStrings):
