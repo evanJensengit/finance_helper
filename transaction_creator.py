@@ -4,9 +4,7 @@ import transaction_creator
 placesCorrelatedWithPatterns = {}
 
 # Initialize a dictionary to store transactions at places
-transactionsAtPlaces = {"amazon": 0, "clothes": 0, "gas": 0, "cats": 0, "costco": 0, "grocery": 0, "internet": 0, "ups": 0, 
-"usps": 0, "utilities": 0, "apple": 0, "entertainment": 0, "food_delivery": 0, "target": 0, "office_supplies": 0, 
-"gym": 0,  "eating_out": 0, "other": 0, "allstate": 0}
+transactionsAtPlaces = {}
 
 # Define a Transaction class to represent individual transactions
 class Transaction:
@@ -108,7 +106,8 @@ def createTransactionObjects(listOfTransactionStrings):
     transactionObjectList = []
     for i in listOfTransactionStrings:
         transactionObjectList.append(create_transaction_from_string(i))
-    generatePlacesWithPatternsDict()    
+    generatePlacesWithPatternsDict()
+    generateTransactionsAtPlaces()
     transactionsWithPlace  = mapCharacterPatternsToPlace(transactionObjectList)
 
     return transactionsWithPlace

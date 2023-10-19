@@ -34,7 +34,7 @@ def main():
     # Specify the paths for your PDF and the desired text file
     pdf_file_path = input("Enter the path of the .pdf file you would like to read from")
     txt_file_path = input("Enter the name of the .txt file you would like to create")
-
+    
     # Call the function to convert the PDF to text
     if testing:
         pdf_file_path = "banking_statements/091423 WellsFargo.pdf"
