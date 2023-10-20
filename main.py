@@ -37,7 +37,7 @@ def main():
 
     # Call the function to convert the PDF to text
     if testing:
-        pdf_file_path = "banking_statements/091423 WellsFargo.pdf"
+        pdf_file_path = "/Users/evanjensen/Documents/sideProjects/finance_helper/banking_statements/101523 WellsFargo.pdf"
         txt_file_path = "Spending.txt"
     
     # Call the function pdf_to_text to convert the PDF to text
